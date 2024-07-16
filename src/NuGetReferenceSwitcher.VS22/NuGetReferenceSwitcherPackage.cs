@@ -6,17 +6,17 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
+using EnvDTE;
+using EnvDTE80;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using NuGetReferenceSwitcher.Presentation.Views;
 using System;
-using System.Runtime.InteropServices;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
-using EnvDTE;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Shell;
-using NuGetReferenceSwitcher.Presentation.Views;
-using VSLangProj;
 
 namespace RicoSuter.NuGetReferenceSwitcher
 {
@@ -41,7 +41,7 @@ namespace RicoSuter.NuGetReferenceSwitcher
 
         private void OnShowDialog(object sender, EventArgs e)
         {
-            var application = (DTE)GetService(typeof(SDTE));
+            var application = (DTE2)GetService(typeof(SDTE));
             if (application.Solution == null || !application.Solution.IsOpen)
                 MessageBox.Show("Please open a solution first. ", "No solution");
             else

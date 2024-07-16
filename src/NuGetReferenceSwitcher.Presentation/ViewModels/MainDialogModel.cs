@@ -6,6 +6,13 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
+using EnvDTE;
+using EnvDTE80;
+using MyToolkit.Build;
+using MyToolkit.Collections;
+using MyToolkit.Mvvm;
+using MyToolkit.Utilities;
+using NuGetReferenceSwitcher.Presentation.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,13 +21,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using EnvDTE;
-using EnvDTE80;
-using MyToolkit.Build;
-using MyToolkit.Collections;
-using MyToolkit.Mvvm;
-using MyToolkit.Utilities;
-using NuGetReferenceSwitcher.Presentation.Models;
 using VSLangProj;
 
 namespace NuGetReferenceSwitcher.Presentation.ViewModels
@@ -51,7 +51,7 @@ namespace NuGetReferenceSwitcher.Presentation.ViewModels
         public bool RemoveProjects { get; set; }
 
         /// <summary>Gets or sets the Visual Studio application object. </summary>
-        public DTE Application { get; set; }
+        public DTE2 Application { get; set; }
 
         /// <summary>Gets or sets the used UI dispatcher. </summary>
         public Dispatcher Dispatcher { get; set; }
@@ -73,7 +73,7 @@ namespace NuGetReferenceSwitcher.Presentation.ViewModels
             get { return ExtensionAssembly != null ? ExtensionAssembly.GetVersionWithBuildTime() : "n/a"; }
         }
 
-        /// <summary>Initializes the view model. Must only be called once per view model instance 
+        /// <summary>Initializes the view model. Must only be called once per view model instance
         /// (after the InitializeComponent method of a <see cref="!:UserControl"/>). </summary>
         public override async void Initialize()
         {
@@ -134,7 +134,7 @@ namespace NuGetReferenceSwitcher.Presentation.ViewModels
                                     PathUtilities.MakeRelative(assemblyToProjectSwitch.ToProject.Path,
                                         project.CurrentConfigurationPath) + "\t" +
                                     PathUtilities.MakeRelative(fromAssemblyPath, project.CurrentConfigurationPath) +
-                                    "\n";                                
+                                    "\n";
                             }
                             else
                             {
@@ -186,7 +186,7 @@ namespace NuGetReferenceSwitcher.Presentation.ViewModels
                             {
                                 MessageBox.Show("The project '" + transformation.ToAssemblyPath + "' could not be added. " +
                                                 "\nSkipped.", "Could not add project", MessageBoxButton.OK, MessageBoxImage.Error);
-                            }                           
+                            }
                         }
                     }
 
