@@ -6,14 +6,15 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
+using EnvDTE;
+using EnvDTE80;
+using MyToolkit.Collections;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Threading;
 using System.Xml;
-using EnvDTE;
-using MyToolkit.Collections;
 using VSLangProj;
 
 namespace NuGetReferenceSwitcher.Presentation.Models
@@ -27,11 +28,11 @@ namespace NuGetReferenceSwitcher.Presentation.Models
         /// <summary>Initializes a new instance of the <see cref="ProjectModel"/> class. </summary>
         /// <param name="project">The native project object. </param>
         /// <param name="application">The native application object. </param>
-        public ProjectModel(VSProject project, DTE application)
+        public ProjectModel(VSProject project, DTE2 application)
         {
             _vsProject = project;
 
-			Name = project.Project.Name;
+            Name = project.Project.Name;
             SolutionFile = new FileInfo(application.Solution.FileName);
             LoadReferences();
         }
@@ -56,7 +57,7 @@ namespace NuGetReferenceSwitcher.Presentation.Models
         {
             get { return GetConfigurationPath(".previous.nugetreferenceswitcher"); }
         }
-        
+
         /// <summary>Gets the current project reference to NuGet reference transformations. </summary>
         public List<FromProjectToNuGetTransformation> CurrentToNuGetTransformations
         {
@@ -75,10 +76,10 @@ namespace NuGetReferenceSwitcher.Presentation.Models
             get { return _vsProject.Project.FileName; }
         }
 
-        /// <summary>Deletes the previous configuration file and renames the current 
+        /// <summary>Deletes the previous configuration file and renames the current
         /// configuration file to the path of the previous configuration file.  </summary>
         public void DeleteConfigurationFile()
-        {               
+        {
             if (File.Exists(CurrentConfigurationPath))
             {
                 if (File.Exists(PreviousConfigurationPath))
@@ -118,7 +119,7 @@ namespace NuGetReferenceSwitcher.Presentation.Models
 
                 return true;
             }
-            return false; 
+            return false;
         }
 
         /// <summary>Removes the project from the solution. </summary>
@@ -146,10 +147,9 @@ namespace NuGetReferenceSwitcher.Presentation.Models
                     .Select(l => l.Split('\t'))
                     .Where(l => l.Length == 3).ToArray();
 
-                
-
                 foreach (var line in lines)
-                    list.Add(new FromProjectToNuGetTransformation {
+                    list.Add(new FromProjectToNuGetTransformation
+                    {
                         FromProjectName = line[0],
                         FromProjectPath = PathUtilities.MakeAbsolute(line[1], configurationPath),
                         ToAssemblyPath = PathUtilities.MakeAbsolute(line[2], configurationPath)
